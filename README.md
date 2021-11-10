@@ -1,6 +1,6 @@
 # Thesis Template by André Greiner-Petter
 
-This is a template primarily for Bachelor's, Master's, or PhD theses. Feel free to use it as a template for your own thesis. 
+This is a template primarily for Bachelor's, Master's, or PhD theses. Feel free to use it as a template for your own thesis. To see how this template looks like, open [thesis.pdf](https://github.com/AndreG-P/thesis-template/blob/main/thesis.pdf).
 
 Note that this template is not following ***any*** university specific style guides. However, the template use general rules that can be applied to theses, e.g., the front page contains all typical required information for a thesis such as the name or the logo of the university.
 If you use it for your thesis, make sure you follow the guidelines of your institute! This template uses the `geometry` package. Update the specs in `styles/thesis.sty` if necessary.
