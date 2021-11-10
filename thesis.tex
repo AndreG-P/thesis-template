@@ -1,0 +1,200 @@
+% This is a template by André Greiner-Petter for a PhD thesis.
+% The comments starting with "%TODO" mark the blocks you should update
+% for your own thesis.
+
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\documentclass[twoside,titlepage,11pt,a4paper]{book}
+
+%TODO Use the following command \printtrue to activate print colors (e.g., no colored links)
+\newif\ifprint
+\printfalse
+%\printtrue
+
+\usepackage[dvipsnames,table]{xcolor}	% colors
+\usepackage{styles/customfields}
+
+%TODO The following fields contains the basic information of your thesis and
+% will appear on the front page: 
+\title{PhD Thesis Title} % the title of your thesis
+\subtitle{Thesis Subtitle} % the subtitle of your thesis
+\author{Andr\'{e} Greiner-Petter} % the author
+\degree{Doctor of Engineering Sciences (Dr.-Ing.)} % the degree you are going to obtain
+\department{School of Electrical, Information and Media Engineering} % the department of your university
+\group{Data \& Knowledge Engineering Group} % your research group (this is optional and you can just skip this if you don't have a group)
+\logo{logo/BUW_logo.svg.png} % the path to the logo with the university name
+\city{Wuppertal} % The city of your university
+\submissionyear{2021} % The year of submission
+
+% The following entries are just for the meta data of the generated PDF.
+% This ensures a more professional PDF output even though most people will not
+% notice it in the end.
+\subject{Doctoral Thesis in Scientific Computing, University of Wuppertal, October 2021}
+\keywords{First Keyword, 2nd Keyword, Drittes Keyword}
+
+\input{preamble.tex}
+
+%TODO You can (and often should) define some doctoral committee members. At least
+% the first and second supervisor is recommended. If you define members, you must import
+% preamble.tex before!
+\committeemember{Chairperson}{Prof.~Dr.~Chair Person}
+\committeemember{Supervisor}{Prof.~Dr.~First Supervisor}
+\committeemember{Supervisor}{Second Supervisor, PhD}
+\committeemember{Adviser}{Dr.~Ad Viser}
+
+% This package is only required to generate dummy text
+\usepackage{lipsum}
+
+\begin{document}
+\frontmatter
+\pagestyle{othermatter}
+
+\input{chapters/titlepage.tex}
+
+\titlespacing*{\chapter}{0pt}{-20pt}{40pt}
+
+\glsunsetall
+\setcounter{secnumdepth}{-1}
+\addcontentsline{toc}{chapter}{FRONT MATTER }
+
+\microtypesetup{protrusion=false}
+\dominitoc% init mini tocs
+{% bold hack to stop TOC making CONTENTS in header...
+\renewcommand{\MakeUppercase}[1]{\bfseries #1}
+\tableofcontents
+\adjustmtc
+\microtypesetup{protrusion=true}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{List of Figures}
+\listoffigures
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{List of Tables}
+\listoftables
+}
+
+\glsresetall
+\begin{abstract}
+\markboth{{\bfseries Abstract}}{}
+\input{chapters/abstract.tex}
+\end{abstract}
+
+\glsresetall
+\begin{abstract}[ngerman]
+\markboth{{\bfseries Zusammenfassung}}{}
+\input{chapters/zusammenfassung.tex}
+\end{abstract}
+
+\cleardoublepage
+\phantomsection
+\markboth{{\bfseries Acknowledgements}}{}
+\addcontentsline{toc}{section}{Acknowledgements}
+\chapter*{Acknowledgements}
+\input{chapters/acknowledgements.tex}
+
+\mainmatter
+\pagestyle{mainmatter}
+\glsresetall
+% back to default
+\setcounter{secnumdepth}{3}
+\titlespacing*{\chapter}{0pt}{50pt}{40pt}
+
+\chapter{Introduction}\label{ch:introduction}
+\minitoc% creates toc for this chapter
+\chapterQuote{%
+I went to the woods because I wanted to live deliberately. I wanted to live deep and suck out all the marrow of life. To put to rout all that was not life; and not, when I had come to die, discover that I had not lived.
+}{Neil Perry - \textit{Dead Poet Society}}
+
+\input{chapters/chapter_01/main.tex}
+
+% If you want to add a manual pagebreak between the chapters in the table of contents, use the following
+% command:
+%\addtocontents{toc}{\protect\pagebreak}
+
+\chapter{Related Work}\label{ch:related-work}
+\minitoc% creates toc for this chapter
+\chapterQuote{%
+I don't know half of you half as well as I should like, and I like less than half of you half as well as you deserve.
+}{Bilbo Baggins - \textit{The Lord of the Rings}}
+
+\input{chapters/chapter_02/main.tex}
+
+% Start of backmatter
+\pagebreak
+\makeatletter
+\let\@chapterQuote\@empty
+\makeatother
+
+\backmatter
+\appendix
+\titlespacing*{\chapter}{0pt}{-20pt}{40pt}
+\renewcommand\chaptername{Appendix}
+\renewcommand\thesection{\Alph{section}}
+\renewcommand\currentmattertitle{}
+
+%\setcounter{secnumdepth}{-1}
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{BACK MATTER }
+%\pagestyle{plain}
+%\chapter*{BACK MATTER}
+%\adjustmtc
+%\minitoc
+
+%\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Appendix}
+\addtocontents{lof}{\protect\addvspace{10pt}} %adds 10pt space in list of figures
+\renewcommand\currentmattertitle{Back Matter}
+\chapter*{Appendix}\label{ch:appendix}
+\adjustmtc
+\minitoc
+%since we use chapter*, classical counters getting confused.
+% we want equations, figures, tables, and lstlistings to reflect 
+% the appendix in the label. So we need to update all counter labels and reset them to 0
+%\renewcommand\thesection{\Alph{section}}
+\renewcommand\thefigure{\thesection.\arabic{figure}}
+\renewcommand\thelstlisting{\thesection.\arabic{lstlisting}}
+\renewcommand\thetable{\thesection.\arabic{table}}
+\renewcommand\theequation{\thesection.\arabic{equation}}
+\setcounter{figure}{0}
+\setcounter{lstlisting}{0}
+\setcounter{table}{0}
+\setcounter{equation}{0}
+\markboth{{\bfseries Appendix}}{}
+
+\input{./chapters/chapter_03/main.tex}
+
+
+%\phantomsection
+%\addcontentsline{toc}{section}{Abbreviation}
+%\printglossary[type=\acronymtype]
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Glossary}
+\pagestyle{othermatter}
+\setglossarystyle{thesislist}
+\printglossary
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Bibliography of Publications, Submissions \& Talks}\label{backmatter:pubs}
+\renewcommand*{\bibfont}{\footnotesize} % make it very small
+\defbibnote{mybib}{\markboth{\bfseries Bibliography of Publications, Submissions \& Talks}{}}
+
+\Setmaxbibnames{99}
+\printbibliography[keyword=primary, title={Bibliography of Publications,\\ Submissions \& Talks}, prenote=mybib]
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Bibliography}
+\renewcommand*{\bibfont}{\footnotesize} % make it very small
+\defbibnote{dissbib}{\markboth{\bfseries Bibliography}{}}
+\Setmaxbibnames{6}
+\printbibliography[notkeyword=primary, prenote=dissbib]
+
+\end{document}

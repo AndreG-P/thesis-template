@@ -1,0 +1,3 @@
+# The Content of this Thesis
+
+This directory contains the content of this thesis. This is simply to remove the heavy and long content from the main directory. The only file you should not remove is `titlepage.tex` which defines the layout of the title page. In case you are not happy with the title page or your institute defines a guideline that requires a different title page, you can update or replace this page.

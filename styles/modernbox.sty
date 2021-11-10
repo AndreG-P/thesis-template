@@ -1,0 +1,410 @@
+% Inspired by Harvey Sheppard's infoBulle package under MIT license.
+% Original source is available at https://github.com/HarveySheppard/yLaTeX
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{styles/modernbox}[2021/03/25 Modern info box package by Andre Greiner-Petter]
+
+% Imports
+\RequirePackage{pgfopts}
+\RequirePackage{calc}
+\RequirePackage{xparse}
+
+\RequirePackage[most]{tcolorbox}
+\RequirePackage[hypcap=false]{caption}
+\RequirePackage[export]{adjustbox}
+
+\RequirePackage{fontawesome5}
+\pdfmapfile{+fontawesome5.map}
+
+\makeatletter
+\@ifundefined{\string\color@BoxBackgroundColor}{\colorlet{BoxBackgroundColor}{Gray!10}}
+\@ifundefined{\string\color@CodeBoxColor}{\colorlet{CodeBoxColor}{MidnightBlue}}
+\@ifundefined{\string\color@TranslationBoxColor}{\colorlet{TranslationBoxColor}{Yellow}}
+\@ifundefined{\string\color@TranslationBoxLightColor}{\colorlet{TranslationBoxLightColor}{Yellow}}
+\@ifundefined{\string\color@ExampleBoxColor}{\colorlet{ExampleBoxColor}{LimeGreen}}
+\@ifundefined{\string\color@DefinitionBoxColor}{\colorlet{DefinitionBoxColor}{RedViolet}}
+\@ifundefined{\string\color@ThesisObjectiveBoxColor}{\colorlet{ThesisObjectiveBoxColor}{Green}}
+\@ifundefined{\string\color@ResearchTaskBoxColor}{\colorlet{ResearchTaskBoxColor}{Green}}
+\@ifundefined{\string\color@PaperBoxColor}{\colorlet{PaperBoxColor}{Gray!50}}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The following code snippet is originally from Harvey Sheppard's infoBulle 
+% package under MIT license. Original source is available at 
+% https://github.com/HarveySheppard/yLaTeX
+
+% Icon Radius
+%-------------------------------------------------------------------------------
+\pgfkeys{
+	/myIcon/icon/.cd,
+	radius/.initial=3.5mm,
+}
+
+% Icon Shape
+%-------------------------------------------------------------------------------
+\pgfkeys{
+	/myIcon/icon/.cd,
+	shape/.is choice,
+	shape/round/.style = {
+		/myIcon/icon/radius = 3.5mm,
+		/myIcon/icon/shapeCommand/.code n args = {3}{\fill[##3] (##1) circle (##2);}},
+	shape/hexagon/.style = {
+		/myIcon/icon/radius = 4mm,
+		/myIcon/icon/shapeCommand/.code n args = {3}{\hexagon{##1}{##2}[##3, rotate=90];}},
+	shape/round,
+}
+
+\ProcessPgfPackageOptions{/myIcon}
+
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\DeclareDocumentCommand{\hexagon}{m m O{}}{
+	\fill [#3] ($ (#1) + (0:#2) $) -- ($ (#1) + (60:#2) $) -- ($ (#1) + (120:#2) $) -- ($ (#1) + (180:#2) $) -- ($ (#1) + (240:#2) $) -- ($ (#1) + (300:#2) $) -- cycle;
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% generate abstract icon
+\DeclareDocumentCommand{\myAbstractIcon}{m m O{text=BoxBackgroundColor} O{0pt}}{%
+	\begin{tikzpicture}[inner sep=0mm, baseline={([yshift=#4]iconText.base)}]%
+		\coordinate (iconCenter) at (0,0);
+		\pgfkeys{/myIcon/icon/shapeCommand={iconCenter}{\pgfkeysvalueof{/myIcon/icon/radius}}{#1}}
+		\draw (iconCenter) node[text width=.7cm, align=center, font=\fontsize{.4cm}{.48cm}, #3] (iconText) {#2};
+	\end{tikzpicture}
+}
+
+% redefine shape, currently supported round and hexagon
+% simply define: \myIconConfiguration{icon/shape = hexagon}
+\DeclareDocumentCommand{\myIconConfiguration}{m}{\pgfkeys{/myIcon/.cd, #1}}
+
+\RequirePackage{listings}
+\lstnewenvironment{code}[1][Python]
+{
+	\lstset{
+		language={#1},
+		numbers=left,
+		numbersep=7mm,
+		numberstyle=\color{black},
+		stepnumber=1,
+		tabsize=3,
+		breakatwhitespace=false,
+		breaklines=true,
+		captionpos=b,
+		showstringspaces=false,
+		basicstyle=\color{black}\small\ttfamily,
+		commentstyle=\color{LimeGreen!30!OliveGreen!90!white},
+		keywordstyle=\color{BurntOrange!90!white},
+		stringstyle=\color{WildStrawberry},
+		%keywords={var, func, extends},
+		frame=leftline,
+		framesep=0mm,
+		xleftmargin=-1mm,% left margin verschiebt alles nach rechts
+		framesep=0mm, % separation
+		framerule=0mm,
+		abovecaptionskip=3mm,
+		aboveskip=0pt,
+		belowskip=0pt,
+		mathescape=true,
+	}
+}
+{}
+
+\lstnewenvironment{customcode}[1][]
+{
+	\lstset{
+		numbers=left,
+		numbersep=7mm,
+		numberstyle=\color{black},
+		stepnumber=1,
+		tabsize=3,
+		breakatwhitespace=false,
+		breaklines=true,
+		captionpos=b,
+		showstringspaces=false,
+		basicstyle=\color{black}\small\ttfamily,
+		commentstyle=\color{LimeGreen!30!OliveGreen!90!white},
+		keywordstyle=\color{BurntOrange!90!white},
+		stringstyle=\color{WildStrawberry},
+		%keywords={var, func, extends},
+		frame=leftline,
+		framesep=0mm,
+		xleftmargin=-1mm,% left margin verschiebt alles nach rechts
+		framesep=0mm, % separation
+		framerule=0mm,
+		abovecaptionskip=3mm,
+		aboveskip=0pt,
+		belowskip=0pt,
+		mathescape=true,
+		#1
+	}
+}
+{}
+
+\definecolor{eclipseStrings}{RGB}{42,0.0,255}
+\definecolor{eclipseKeywords}{RGB}{127,0,85}
+\colorlet{numb}{magenta!60!black}
+
+\lstdefinelanguage{json}{
+    basicstyle=\small\ttfamily,
+    commentstyle=\color{eclipseStrings}, % style of comment
+    stringstyle=\color{eclipseKeywords}, % style of strings
+    numbers=left,
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+	mathescape=false,
+    %frame=lines,
+    %backgroundcolor=\color{Gray!10}, %only if you like
+    string=[s]{"}{"},
+    comment=[l]{:\ "},
+    morecomment=[l]{:"},
+    literate=
+        *{0}{{{\color{numb}0}}}{1}
+         {1}{{{\color{numb}1}}}{1}
+         {2}{{{\color{numb}2}}}{1}
+         {3}{{{\color{numb}3}}}{1}
+         {4}{{{\color{numb}4}}}{1}
+         {5}{{{\color{numb}5}}}{1}
+         {6}{{{\color{numb}6}}}{1}
+         {7}{{{\color{numb}7}}}{1}
+         {8}{{{\color{numb}8}}}{1}
+         {9}{{{\color{numb}9}}}{1}
+}
+
+%\RequirePackage{styles/lstomdoc}
+\lstdefinelanguage{MathML}[]{XML}{
+	basicstyle=\sf\footnotesize,
+	columns=fullflexible,
+	mathescape=true,
+	commentstyle=\color{Gray!80},
+    xleftmargin=.037\textwidth,
+    xrightmargin=.01\textwidth,
+    keywordstyle=[2]\color{cyan!70!white},
+    stringstyle=\color{Gray},
+	morestring=[b][\color{LimeGreen!30!OliveGreen!90!white}]",
+    keywords=[2]{cd,id,qid,xref,encoding,definitionURL,name},
+	morekeywords={math,semantics,annotation-xml,annotation,share,
+               maction,mspace,
+               msub,msup,msubsup,
+               mrow,mo,mi,mn,mfrac,mfenced,mtext,
+               apply,bind,bvar,ci,cn,sep,csymbol,
+               condition,domainofapplication,lowlimit,uplimit,degree,
+               interval,inverse,lambda,compose,ident,domain,codomain,image,
+               piecewise, piece, otherwise,
+               quotient,factorial,divide,max,min,minus,plus,power,rem,times, root,gcd,lcm,
+               and,or,xor,not,implies,forall,exists,
+               abs,conjugate,arg,real,imaginary,floor,ceiling,
+               sin,cos,tan,sec,csc,cot,sinh,cosh,tanh,sech,csch,coth,
+               arcsin,arccos,arctan,arccosh,arccot,arccoth,arccsc,arccsch,arcsec,arcsech,arcsinh,arctanh,
+               eq,neq,gt,lt,geq,leq,equivalent,approx,factorof,
+               int,diff,partialdiff,divergence,grad,curl,laplacian,
+               set,list,union,intersect,in,notin,subset,prsubset,notsubset,notprsubset,setdiff,card,cartesianproduct,
+               sum,product,limit,tendsto,exp,ln,log,mean,sdev,variance,median,mode,moment,momentabout,
+               vector,matrix,matrixrow,determinant,transpose,selector,vectorproduct,scalarproduct,outerproduct,
+               integers,reals,rationals,naturalnumbers,complexes,primes,
+               exponentiale,imaginaryi,notanumber,true,false,emptyset,pi,eulergamma,infinity,
+               mstack,msgroup,msrow,msline,mscarries,mscarry,mlongdiv,
+               msqrt,mroot,mstyle,merror,mpadded,mphantom,menclose,
+               munder,mover,munderover,mmultiscripts,mprescripts,
+               mtable,mlabeledtr,mtr,mtd,
+               maligngroup,malignmark,
+               reln,fn,declare,annotation-xml,
+			   OMOBJ,OMA,OMS,OMV},
+   sensitive=true
+}
+
+\lstdefinelanguage{isabelle}{
+	basicstyle=\sf\footnotesize,
+	columns=fullflexible,
+	mathescape=true,
+    xleftmargin=.037\textwidth,
+    xrightmargin=.01\textwidth,
+	keywordstyle=[2]\color{NavyBlue},
+    keywordstyle=[3]\color{Turquoise!50!SpringGreen},
+	keywordstyle=[4]\color{Purple},
+    stringstyle=\color{Gray},
+	morestring=[b][\color{LimeGreen!30!OliveGreen!90!white}]",
+	keywords=[2]{theorem,proof,from,have,then,obtain,by,also,finally,using,qed,with},
+	keywords=[3]{assumes,shows,where,and},
+	keywords=[4]{thesis,simp,add,False,rule,blast,auto},
+	morekeywords={assume,show,obtain},
+   sensitive=true
+}
+
+
+\lstdefinelanguage{mytex}[LaTeX]{TeX}{
+  basicstyle=\footnotesize\ttfamily,
+  mathescape=false,
+  alsoletter={\\,*,\&,_,^,=},
+  morekeywords={\\begin,\\end,\\intertext,\\\\,\&,\\JacobipolyP,\\alpha,\\beta,\\zeta,\\Rightarrow,\\lor,\\Re,\\Im,\\frac},  
+  morekeywords=[2]{figure,
+                   tabular,
+                   tabulary,
+                   document,
+                   minipage,
+                   verbatim,
+                   table,
+                   enumerate,
+                   tikzpicture,
+                   preview,
+                   alignat*},  
+  literate=*{\{}{{\textcolor{WildStrawberry}{\{}}}{1}
+            {\}}{{\textcolor{WildStrawberry}{\}}}}{1}
+            {[}{{\textcolor{WildStrawberry}{[}}}{1}
+            {]}{{\textcolor{WildStrawberry}{]}}}{1},
+  moredelim=[is][\color{Red}]{??}{??}
+}
+
+\newcommand\Small{\fontsize{8}{8.2}\selectfont}
+\newcommand*\LSTfont{\Small\ttfamily\SetTracking{encoding=*}{-70}\lsstyle}
+
+\lstdefinelanguage{mymathematica}{
+	basicstyle=\footnotesize\ttfamily,	keywords={QHypergeometricPFQ,LaguerreL,Gamma,QPochhammer,Divide,Product,Or,Re,Im,Reduce,FreeVariables,EulerE,N,Indeterminate,Part,Infinity,Limit,Length,Integrate,expr,In,Out,ReplaceAll,Implies,Equal,Zeta,Rational,GenerateConditions,Abs,BesselJ,Pi,Rule},
+	%keywordstyle=\color{black},
+	%commentstyle=\color{gray}, 
+	%stringstyle=\color{mymauve},
+	%identifierstyle=\color{blue},
+	alsoletter={\\,*,\&,_,^,[,]},
+	sensitive=true,
+	comment=[l]{(*},
+	morecomment=[s]{/*}{*/},
+	morestring=[b]',
+	morestring=[b]",
+	showspaces=false,
+	literate=*{\{}{{\textcolor{WildStrawberry}{\{}}}{1}
+            {\}}{{\textcolor{WildStrawberry}{\}}}}{1}
+            {[}{{\textcolor{WildStrawberry}{[}}}{1}
+            {]}{{\textcolor{WildStrawberry}{]}}}{1}
+			{*}{{\textcolor{numb}{*}}}{1}
+			{-}{{\textcolor{numb}{-}}}{1}
+			{+}{{\textcolor{numb}{+}}}{1}
+			{/}{{\textcolor{numb}{/}}}{1}
+			{=}{{\textcolor{RedViolet}{=}}}{1},
+}
+
+\lstdefinelanguage{maple}{
+	basicstyle=\footnotesize\ttfamily,
+	keywords={diff,exp,erfc,factorial},
+	%keywordstyle=\color{black},
+	%commentstyle=\color{gray}, 
+	%stringstyle=\color{mymauve},
+	%identifierstyle=\color{blue},
+	alsoletter={\\,*,\&,_,^,[,]},
+	sensitive=false,
+	comment=[l]{(*},
+	morecomment=[s]{/*}{*/},
+	morestring=[b]',
+	morestring=[b]",
+	showspaces=false,
+	literate=*{\{}{{\textcolor{WildStrawberry}{\{}}}{1}
+            {\}}{{\textcolor{WildStrawberry}{\}}}}{1}
+            {[}{{\textcolor{WildStrawberry}{[}}}{1}
+            {]}{{\textcolor{WildStrawberry}{]}}}{1}
+			{\$}{{\textcolor{WildStrawberry}{\$}}}{1}
+			{*}{{\textcolor{numb}{*}}}{1}
+			{-}{{\textcolor{numb}{-}}}{1}
+			{+}{{\textcolor{numb}{+}}}{1}
+			{/}{{\textcolor{numb}{/}}}{1}
+			{=}{{\textcolor{RedViolet}{=}}}{1},
+}
+
+\ExplSyntaxOn\cs_set_eq:NN \IfEmptyTF\tl_if_blank:nTF\ExplSyntaxOff
+\NewDocumentEnvironment{codebox}{m O{} O{} O{0.92}}{%
+	\begin{tcolorbox}[width=\linewidth,colframe=CodeBoxColor,colback=BoxBackgroundColor,boxsep=0.1mm, arc=0mm,boxrule=0.0mm,leftrule=1.5mm,rightrule=0mm]%
+		{\Large\space\myAbstractIcon{CodeBoxColor}{\faIcon{code}}\space} \begin{minipage}{#4\linewidth}\sffamily\textbf{#1}\end{minipage}\par\medskip
+		
+}{%
+	\end{tcolorbox}
+	\IfEmptyTF{#2}{}{
+		\vspace*{-0.3cm}
+		\begin{center}
+			\captionof{lstlisting}{#2}
+			\IfEmptyTF{#3}{}{\label{#3}}
+		\end{center}
+	}
+}
+
+
+\NewDocumentEnvironment{myboxenv}{m m m}{%
+	\begin{tcolorbox}[width=\linewidth,colframe=#1,colback=BoxBackgroundColor,boxsep=0.1mm, arc=0mm,boxrule=0.0mm,leftrule=1.5mm,rightrule=0mm]%
+		{\Large\space\myAbstractIcon{#1}{#2}\space} \begin{minipage}{0.92\textwidth}\sffamily\textbf{#3}\end{minipage}\par\medskip
+		
+}{%
+	\end{tcolorbox}
+}
+
+\NewDocumentEnvironment{myboxenvSmallInfo}{m m}{%
+	\begin{tcolorbox}[width=\linewidth,colframe=#1,colback=BoxBackgroundColor,boxsep=0.1mm, arc=0mm,boxrule=0.0mm,leftrule=1.5mm,rightrule=0mm]%
+		{\space\scalebox{0.8}{\myAbstractIcon{#1}{\faIcon{exclamation-circle}}[text=BoxBackgroundColor][-2.5pt]}} \textbf{#2}\par\smallskip
+		
+}{%
+	\end{tcolorbox}
+}
+
+\NewDocumentEnvironment{translationbox}{m}{%
+	\begin{myboxenv}{TranslationBoxColor}{\faIcon{language}}{#1}
+}{%
+	\end{myboxenv}
+}
+
+\NewDocumentEnvironment{infobox}{m}{%
+	\begin{myboxenvSmallInfo}{TranslationBoxLightColor}{#1}
+}{%
+	\end{myboxenvSmallInfo}
+}
+
+\NewDocumentEnvironment{examplebox}{m}{%
+	\begin{myboxenv}{ExampleBoxColor}{\faIcon{feather-alt}}{#1} % dice-d20
+}{%
+	\end{myboxenv}
+}
+
+\newcounter{definition}
+\setcounter{definition}{0}
+\renewcommand\thedefinition{\thechapter.\arabic{definition}}
+
+\let\OldChapter\chapter
+\renewcommand{\chapter}{\setcounter{definition}{0}\OldChapter}
+
+\NewDocumentEnvironment{definitionbox}{m o}{%
+	\begin{myboxenv}{DefinitionBoxColor}{\faIcon{user-graduate}}{%
+	\IfNoValueTF{#2}{#1}{\refstepcounter{definition}Definition~\thedefinition:\label{#2}~#1}}
+}{%
+	\end{myboxenv}
+}
+
+\NewDocumentEnvironment{thesisobjectivebox}{}{%
+	\begin{myboxenv}{ThesisObjectiveBoxColor}{\faIcon{university}}{Research Objective}
+	\begin{center}%\itshape
+}{%
+	\end{center}
+	\end{myboxenv}
+}
+
+\NewDocumentEnvironment{researchtaskbox}{m}{%
+	\begin{myboxenv}{ResearchTaskBoxColor}{\faIcon{flask}}{#1} %clipboard-list
+}{%
+	\end{myboxenv}
+}
+
+
+\DeclareDocumentCommand{\paperbox}{m m m}{%
+	\begin{tcolorbox}[width=\linewidth,colframe=PaperBoxColor,colback=BoxBackgroundColor,boxsep=0.1mm, arc=0mm,boxrule=0.0mm,leftrule=1.5mm,rightrule=0mm]%
+	\begin{minipage}[t][3.15cm]{0.18\textwidth}
+		\vspace{0pt}
+		\begin{tikzpicture}[every node/.style={anchor=north west,inner sep=0pt}, x=1mm, y=1mm]   
+     		\node (fig1) at (0,0) {\includegraphics[width=0.9\linewidth,frame=.2pt]{#1}};
+     		\coordinate (iconCenter) at (.2cm,-.3cm);
+     		\pgfkeys{/myIcon/icon/shapeCommand={iconCenter}{\pgfkeysvalueof{/myIcon/icon/radius}}{PaperBoxColor}}
+			\draw (iconCenter) node[left=-.235cm, font=\fontsize{.4cm}{.48cm}, BoxBackgroundColor] (iconText) {\faIcon{book-open}};  
+		\end{tikzpicture}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[t][3.15cm]{0.79\textwidth}\vspace{.4cm}\small#2 \par\vspace{-2\baselineskip}
+	\vfill\hfill{\sffamily #3}\end{minipage}
+	%\par\smallskip\vfill\hfill {#3}\end{minipage}
+\end{tcolorbox}
+}

@@ -1,0 +1,36 @@
+The following content outlines a typical section structure. It is intended to show you how the structure may look like including tables, pictures, and several examples of info boxes. Note also the glossary entries, such as \gls{bm25}~\cite{RobertsonZ09}, or math glossary links, such as \gls{mbm25-math}. Those are linked to the glossary in the PDF. All colors are defined in the \texttt{preamble.tex} file. Feel free to change them. There are two color modes, the non-printing and the printing mode. The printing mode is intended to reduce the number of colored pages (e.g., the vertical line on each page next to the page number will be gray rather than blue in print mode) but keep the highlights (e.g., info boxes) colored.
+
+\section{Elements of This Template}\label{sec:intro}
+
+\input{./chapters/chapter_01/introduction.tex}
+
+\section{Example Section}\label{sec:research-gap}
+
+\lipsum[3]
+
+\section{Example Outline}\label{sec:outline}
+\noindent\textbf{\Cref{ch:introduction}}
+\lipsum[1][1-2]
+
+\noindent\textbf{\Cref{ch:related-work}}
+\lipsum[1][1-2]
+
+\noindent\textbf{The \hyperref[ch:appendix]{Appendix}}
+\lipsum[1][1-2]
+
+\subsection{Example Overview of Publications}
+\lipsum[2]
+
+\begin{table}[ht]
+\caption[Example of short caption for the List of Tables.]{Example full caption of a table.}
+\label{tab:publications}
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{c:l:l:l:l:c:l:r}\hline
+	\textbf{Ch.} & \textbf{Venue} & \textbf{Year} & \textbf{Type} & \textbf{Length} & \makecell[bl]{\textbf{Author} \\\textbf{Position}} & \makecell[bl]{\textbf{Venue} \\\textbf{Rating}} & \textbf{Ref.} \\\hline
+	\rowcolor{TableRowColor}\multirow{2}{*}{\cellcolor{white}\ref{ch:related-work}} 
+	& \gls{scientometrics} & 2020 & Journal & Full & 1 of 7 & SJR Q1 & \cite{GreinerPetterYRM20} \\
+	& \gls{www} & 2020 & Conference & Full & 1 of 7 & \glslink{core}{Core} A* & \cite{GreinerPetterSMB20} \\
+ 	\hline
+\end{tabular}
+\end{table}

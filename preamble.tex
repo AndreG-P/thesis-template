@@ -1,0 +1,327 @@
+%%%%%%%%%%%%% STANDARD PACKAGES %%%%%%%%%%%%%%%%
+
+% fonts and symbols
+\usepackage{lmodern} % backup plan (will be mostly overwritten by libertine)
+\usepackage[mono=false]{libertine}
+
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{xfrac} % multi additional fracs, such as sfrac
+\usepackage{enumitem} % customizable enumerates/itemizes
+
+% since we use libertine, this hack is not needed anymore
+%\DeclareFontShape{T1}{lmr}{bx}{sc} { <-> ssub * cmr/bx/sc }{}
+
+% ensure latin modern for tt fonts (verb, codes, etc)
+\renewcommand{\ttdefault}{lmtt}
+
+% that should allo urls to break lines
+% url gets loaded by other packages later, hyperref, biblatex, etc
+% so we use this to force adding the hyphens option to the package
+\PassOptionsToPackage{hyphens}{url}
+
+% ------------- COLOR DEFINITIONS ------------- %
+\usepackage[dvipsnames,table]{xcolor}	% more colors
+\definecolor{RoyalRed}{RGB}{157,16,45}
+
+\definecolor{PrimaryBlue}{HTML}{3C6382}
+\definecolor{SecondaryYellow}{HTML}{F6B93B}
+
+\definecolor{DefinitionRed}{HTML}{b71540} % before: b71540
+\definecolor{SignalGreenColor}{HTML}{afdd5c}
+\definecolor{ParadiseGreenColor}{HTML}{78e08f} % 60a3bc
+
+\colorlet{AccentPrime}{RoyalRed!80!black}
+\colorlet{AccentNum}{black}
+\colorlet{AccentLine}{PrimaryBlue}
+\colorlet{AccentSec}{SecondaryYellow}
+\colorlet{LinkPrime}{black}
+
+\colorlet{HighlightCorrectColor}{ParadiseGreenColor!60!white}
+
+\colorlet{CodeBoxColor}{PrimaryBlue}
+\colorlet{TranslationBoxColor}{SecondaryYellow}
+\colorlet{DefinitionBoxColor}{DefinitionRed}
+\colorlet{HighlightScope}{SecondaryYellow!30}
+
+\definecolor{TranslationBoxLightColor}{HTML}{f8ca6d} 
+\definecolor{ExampleBoxColor}{HTML}{82ccdd}
+\definecolor{ThesisObjectiveBoxColor}{HTML}{78e08f}
+\definecolor{ResearchTaskBoxColor}{HTML}{38ada9}
+
+\definecolor{PaperBoxColor}{HTML}{ad5a81} %{B53471} 
+
+\colorlet{TableRowColor}{gray!10!white}
+\colorlet{BoxBackgroundColor}{gray!10!white}
+
+\colorlet{exMathColor}{gray!100!white}
+\colorlet{exMathColorHighlight}{OrangeRed!80!white}
+
+\colorlet{CorrectBackgroundColor}{OliveGreen!20!white}
+\colorlet{CorrectBackgroundDLMFColor}{SpringGreen!90}
+\colorlet{WrongBackgroundColor}{Red!20!white}
+\colorlet{WrongBackgroundDLMFColor}{Red!20!white}
+
+% standard link colors
+\colorlet{citationcolor}{green}
+\colorlet{urlcolor}{magenta}
+
+\colorlet{checkMarkColor}{ForestGreen!80!LimeGreen}
+\colorlet{crossMarkColor}{Red!80!BrickRed}
+\colorlet{crossColor}{Orange}
+\colorlet{questionMarkColor}{Red!65}
+
+% printing minimal color settings:
+% LinkPrime = black (doc internal links)
+% AccentPrime = black (chapter headers)
+% AccentLine = black (page number vertical line color on every page)
+% below in hypersetup, set citecolor and urlcolor to black
+\makeatletter%
+\ifprint%
+	\colorlet{LinkPrime}{black}
+	\colorlet{AccentPrime}{black}
+	\colorlet{AccentLine}{gray}
+	\colorlet{citationcolor}{black}
+	\colorlet{urlcolor}{black}
+	
+	\colorlet{BoxBackgroundColor}{gray!12!white}
+	\colorlet{TableRowColor}{gray!12!white}
+	
+	%\colorlet{checkMarkColor}{gray}
+	%\colorlet{crossMarkColor}{black}
+	%\colorlet{crossColor}{black}
+	%\colorlet{questionMarkColor}{black}
+	
+	%\colorlet{CorrectBackgroundColor}{gray!20!white}
+	%\colorlet{CorrectBackgroundDLMFColor}{gray!90}
+	%\colorlet{WrongBackgroundColor}{gray!20!white}
+	%\colorlet{WrongBackgroundDLMFColor}{gray!20!white}
+\fi
+\makeatother%
+
+% ------------- BIBLIOGRAPHY ------------- %
+\usepackage[
+	backend		= biber,
+	style		= numeric,
+	natbib		= true,
+	url			= true,
+	doi			= true,
+	eprint		= false,
+	giveninits	= true,
+	defernumbers= true, % recommended due to splitting bib in the end
+	maxbibnames	= 6,
+	minbibnames	= 3,
+	sorting		= nty,
+	alldates	= iso,
+	seconds		= true, % is required when we set date format to 'iso'
+	sortcites,
+	backref % adds back references to citations in bibliography (very nice)
+]{biblatex}
+
+% Bold author positions via author+an = {<numberOfAuthor>=highlight}
+\renewcommand*{\mkbibnamegiven}[1]{%
+  \ifitemannotation{highlight}%
+    {\textbf{#1}}%
+    {#1}}
+
+\renewcommand*{\mkbibnamefamily}[1]{%
+  \ifitemannotation{highlight}%
+    {\textbf{#1}}%
+    {#1}}
+
+% control the number of maxbibnames later
+\makeatletter
+\newcommand\Setmaxbibnames[1]{\renewcommand\blx@maxbibnames{#1}}
+\makeatletter
+
+\addbibresource{./bibliography/Bibliography.bib}
+\addbibresource{./bibliography/BibliographyISO.bib}
+
+% stop biblatex from redefining markboth
+%\defbibheading{subbibintoc}[\refname]{%
+%  \addsec{#1}%
+%   \markboth{#1}{#1}}% DELETED
+%  }% NEW
+
+% allow further stretches for references to avoid overfull hboxes
+\emergencystretch=1.5em
+
+% allow line breaks in URLs in bibliography
+\apptocmd{\UrlBreaks}{\do\f\do\m}{}{}
+\setcounter{biburllcpenalty}{9000}% Kleinbuchstaben
+\setcounter{biburlucpenalty}{9000}% Großbuchstaben
+
+% ------------- LANG SPECS ------------- %
+% lang settings
+\usepackage[%
+	main=english, % for some german text
+	ngerman, % for \autoref again
+	english % obviously the main language we go for
+]{babel}
+
+% should be after babel
+% see here for the settings: http://www.khirevich.com/latex/microtype/
+\usepackage[
+	activate={true,nocompatibility},
+	tracking=true,
+	kerning=true,
+	spacing=true,
+	factor=1100,
+	stretch=15,
+	shrink=15
+]{microtype}
+\microtypecontext{spacing=nonfrench}
+\SetTracking{encoding={*}, shape=sc}{40}
+
+\RequirePackage[ 
+	autostyle,
+	german=quotes,
+]{csquotes} % setup proper citations depending on current language
+
+% ------------- LINKS AND TOCS ------------- %
+% setup hyperlinks and TOC
+\usepackage[pdfpagelabels,plainpages=false]{hyperref}
+\usepackage[nohints]{minitoc}
+\usepackage[titles]{tocloft}
+\usepackage{parskip} % space between paragraphs (after tocloft)
+
+% allow more stretching for URLs to avoid underfull/overfull problems
+\Urlmuskip=0mu  plus 5mu
+
+\setcounter{minitocdepth}{3}
+
+% link setup
+\makeatletter
+\hypersetup{
+	%draft		= true,% deleted all links and colors of links! Printing mode
+	pdftitle	= {\@title\space --- \@subtitle},
+	pdfsubject  = {\@subject},
+	pdfauthor	= {\@author},
+	pdfcreator	= {\@author},
+	pdfkeywords	= {\@keywords},
+    colorlinks, % instead of color borders, color the string
+    linkcolor	= {LinkPrime}, %{red!0!black} <- print
+    citecolor	= {citationcolor}, %{blue!0!black} <- print
+    urlcolor	= {urlcolor}
+}
+\ifprint%
+	\hypersetup{
+		linkbordercolor=black,
+		pdfborderstyle={/S/U/W 1}
+	}%
+\fi
+\makeatother
+
+% ------------- GLOSSARY, FIGURES, STYLES ------------- %
+\usepackage[symbols]{glossaries} % generate glossaries (for example acronyms)
+\input{glossary.tex}
+
+% setup graphics
+\usepackage{graphicx}           % for all images
+\usepackage{subcaption}             % for subfloats (titlepage images)
+\usepackage{wrapfig}			 % wrapping text around figures
+\graphicspath{ {./images/} }    % set the default path for graphics
+
+%%%%%%%%%%%%% VISUALS %%%%%%%%%%%%%%%%
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+
+\usepackage{styles/thesis}
+\usepackage{styles/modernbox}
+\myIconConfiguration{icon/shape = hexagon}
+
+\usepackage{pifont}
+\newcommand{\checkMark}{\textcolor{checkMarkColor}{\ding{52}}}
+\newcommand{\crossMark}{\textcolor{crossMarkColor}{\ding{56}}}
+\newcommand{\cross}{\textcolor{crossColor}{\textbf{\ding{56}}}}
+\newcommand{\questionMark}{\textcolor{questionMarkColor}{\textbf{\textsc{?}}}}
+
+\newcommand{\quoteMark}{\textcolor{gray!20}{\scalebox{5.0}{\ding{125}}}}
+
+% alternatives
+\newcommand{\correct}{\checkMark}
+\newcommand{\maybe}{\questionMark}
+\newcommand{\wrong}{\crossMark}
+
+\makeatletter
+% #1 is a multiplier of fontsize for the minimum diameter of the circle
+% #2 is the symbol to be circled.
+\NewDocumentCommand{\circled}{ O{1.6} O{crossMarkColor} m }{%
+\tikz[baseline={(char.base)}]{
+    \node[shape=circle, draw, inner sep=1pt, 
+        minimum height={\f@size*#1}, color=#2] (char) {#3};}}
+        
+\NewDocumentCommand{\badge}{ m }{%
+\tikz[baseline={(char.base)}]{
+    \node[shape=circle, draw, inner sep=1pt, line width=.3mm,
+        minimum height={\f@size*1.2}, color=CodeBoxColor!80!black, fill=Gray!7] (char) {\textbf{#1}};}}
+\makeatother
+
+%%%%%%%%%%%%% CUSTOM MACROS %%%%%%%%%%%%%%%%
+\newcommand{\accessed}{[accessed 2021-10-01]}
+
+% command for linking to github issues
+\newcommand{\isnr}[1]{\href{https://github.com/ag-gipp/GoUldI/issues/#1}{#1}}
+\newcommand{\PPPcite}[1]{\href{#1}{\textcolor{red}{[?]}}}
+\newcommand{\qId}[1]{\href{https://mathmlben.wmflabs.org/#1}{#1}}
+\newcommand{\qvar}[1]{\ensuremath{\textcolor{red}{#1}}}
+\newcommand{\wData}[2][]{\href{https://www.wikidata.org/w/index.php?title=Q#2&oldid=#1}{\texttt{Q#2}}}
+\newcommand{\w}[2]{\href{https://www.wikidata.org/wiki/#1}{#2}}
+
+\newcommand{\NN}{{\mathbb N}}
+\newcommand{\ZZ}{{\mathbb Z}}
+\newcommand{\RR}{{\mathbb R}}
+\newcommand{\CC}{{\mathbb C}}
+
+% inline graphics
+\newlength\myheight
+\newlength\mydepth
+\settototalheight\myheight{Xygp}
+\settodepth\mydepth{Xygp}
+\setlength\fboxsep{0pt}
+\newcommand*\inlinegraphics[1]{%
+  \settototalheight\myheight{Xygp}%
+  \settodepth\mydepth{Xygp}%
+  \raisebox{-\mydepth}{\includegraphics[height=\myheight]{#1}}%
+}
+
+% use \dlmf{14.4.14} to easy reference to DLMF equations
+\newcommand{\dlmf}[1]{\cite[\href{https://dlmf.nist.gov/#1}{(#1)}]{dlmf}}
+
+% Wikipedia uses texvc, but we cannot import that package from moritz because it breaks all!
+\newcommand{\Beta}{B}
+
+% colarize example math
+\newcommand{\example}[1]{{\color{exMathColor}#1}}
+
+% sets the demo link to TPAMI paper
+\newcommand{\demolink}{\url{https://tpami.wmflabs.org}}
+
+\newcommand{\lacastLink}[2]{\href{https://lacast.wmflabs.org/wiki/#1}{\texttt{#2}}}
+
+\newcommand*\rot{\rotatebox{90}}
+
+%%%%%%%%%%%%% ADDITIONAL STANDARD PACKAGES %%%%%%%%%%%%%%%%
+\usepackage{cleveref}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{arydshln}
+\usepackage{makecell}
+\usepackage{cellspace}
+\usepackage{multirow}
+\usepackage{tablefootnote}
+
+\setlength\cellspacetoplimit{2pt}
+\setlength\cellspacebottomlimit{2pt}
+
+\setlength\dashlinedash{2pt}
+\setlength\dashlinegap{3pt}
+
+\newcolumntype{G}{>{\columncolor{TableRowColor}}c}
+
+% highlight overfull
+\overfullrule=10pt

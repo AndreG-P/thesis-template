@@ -1,0 +1,59 @@
+\makeatletter
+\begin{titlepage}
+% change margins
+\newgeometry{top=4.2cm,bottom=4.2cm,right=0.8in,left=0.8in}
+    \centering
+    
+    {\huge \sffamily\textbf \@title \par}
+    \vspace{0.7pt}
+    {\rule{2cm}{0.7pt}}
+    
+    \vspace{0.7pt}
+    {\LARGE \sffamily\textbf \@subtitle \par}
+    
+    %\vspace{1.3cm}
+    \vfill
+	{\Large Doctoral thesis for obtaining the academic degree of\par}
+	{\huge\sffamily \@degree \par}
+    
+    %\vspace{1.3cm}
+    \vfill
+    {\Large submitted by \par}
+    {\huge \@author \par}
+    
+    %\vspace{1.3cm}
+    \vfill
+    {\Large at the \par}
+    %\vspace{12pt}
+    \begin{figure}[!h]
+    	\centering
+    	\subfloat{\includegraphics[height=2.7cm]{\@logo}}
+    \end{figure}
+    
+    %\vspace{1.3cm}
+    \vfill
+    {\Large\sffamily \@department \par}    
+    \def\temp{\@group}\ifx\temp\empty
+    	% just ignore empty groups
+    \else
+    	{\Large\sffamily \@group \par}
+    \fi
+    
+    \vfill
+    \ifx\committeemembers\empty
+    	% If there are no DC members defined, do not show anything
+    \else
+    	{\Large\sffamily Doctoral Committee\par\smallskip}
+    	{\large\committeetable{\committeemembers}}
+    \fi
+    
+    \vfill
+    {\large\sffamily \@city, \@submissionyear}
+\restoregeometry % reset margins for the rest of the document
+\end{titlepage}
+\makeatother
+\newpage
+% back side of title should be empty -> empty page here
+\mbox{}
+\thispagestyle{empty}
+\newpage

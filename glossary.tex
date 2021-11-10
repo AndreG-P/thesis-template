@@ -1,0 +1,95 @@
+% -------------------- DEFINE GLOSSARY ENTRIES ----------------------- %
+% In this file you define the glossary entries. There are 2 custom fields
+% available. In this template, we do not distinguish between acronyms and
+% abbreviations. In turn, if you specify a new glossary entry which is an
+% acronym, you must manually add the "first" field to specify how the first
+% use of the entry should look like. Typically this is the long version version
+% of the acronym followed by the acronym itself, e.g., "Personal Computer (PC)".
+% If you want to add the long version of an acronym, use 
+% the appropriate custom field user1. If you want to add the definition of
+% a math symbol in the glossary, use the custom field user2. 
+%
+% Important notice, you are not supposed to use user1 and user2 for the same
+% entry!
+%
+% The custom fields are:
+%
+% 	user1: The long version of an acronym. For example: 
+%		name=BLEU,
+%		user1={Bilingual Evaluation Understudy}
+%
+%	user2: Used for the definition of math symbols. For example
+%		name={\ensuremath{f(x)}},
+%		user2={$x^2$}
+%
+% Here is a complete example:
+%
+%\newglossaryentry{id}
+%{
+%    name=NAME,
+%    user1={Non Affirmative Meme Entry},
+%    description={The description of the entry},
+%    plural={NAMEs}, % the plural form of the entry
+%    first={Non Affirmative Meme Entry (NAME)} % if this is an acronym, you may want to define the first usage. The first time you use the entry, it prints the "first" field, all later uses take the "name" field.
+%}
+% 
+
+
+\makeglossaries
+
+% -------------------- MATH SYMBOLS ----------------------- %
+\newglossaryentry{mbm25-math}
+{
+    name={\ensuremath{\operatorname{mBM25}(t,d)}},
+    user2={$\displaystyle\protect\underset{d \in D}{\operatorname{max}} \frac{\left( k + 1 \right) \operatorname{IDF}(t) \operatorname{ITF}(t,d) \operatorname{TF}(t,d)}{\protect\underset{t' \in d|_{c(t)}}{\operatorname{max}}\! \operatorname{TF}(t',d) + k \left( 1-b + \frac{b \operatorname{AVG}_{\mathrm{DL}}}{|d| \operatorname{AVG}_{C}} \right)}$},
+    description={Our mathematical \gls{bm25} ranking to measure the importance of a given \gls{moi} $t$ in a document $d \in D$ which is part of a corpora $D$. $\operatorname{IDF}(t)$ is the inverse-document frequency, $\operatorname{ITF}(t,d)$ the inverse-term frequency of $t$ in $d$, $\operatorname{TF}(t,d)$ the term frequency of $t$ in $d$, $\operatorname{AVG}_{\mathrm{DL}}$ the average document length (number of terms) in $D$, $\operatorname{AVG}_{C}$ the average complexity of terms in $D$, $c(t)$ the complexity of $t$, and $b$, $k$ are parameters}
+}
+
+% -------------------- DEFINE ACRONYMS ----------------------- %
+
+\newglossaryentry{moi}
+{
+    name=MOI,
+    user1={Mathematical Objects of Interest},
+    description={Is a term referring to subexpressions in mathematical formulae with a specific meaning~\cite{GreinerPetterSMB20}. One can consider these parts as elements of general interest},
+    plural={MOIs},
+    first={Mathematical Objects of Interest (MOI)}
+}
+
+\newglossaryentry{bm25}
+{
+    name=BM25,
+    user1={Okapi BM25},
+    description={Is a ranking function to calculate the relevance of results in a search engine~\cite{RobertsonZ09}. The underlying idea of BM25 is that words that appear regularly only in a few documents are more \textit{important} for that document than words that appear everywhere across the entire corpora}
+}
+
+\newglossaryentry{www}
+{
+    name={WWW},
+    user1={The Web Conference},
+    description={An annual major conference with the focus on the world wide web (has a \gls{core} rank of \texttt{A*})}
+}
+
+\newglossaryentry{core}
+{
+    name={CORE},
+    user1={Computing Research and Education Association of Australasia},
+    description={Is an association of university departments that provide assessments of major conferences in the computing disciplines. The main categories are \texttt{A*} (flagship), \texttt{A} (excellent), \texttt{B} good to very good, and \texttt{C} for other ranked conferences that meet minimum standards, see \url{http://portal.core.edu.au/conf-ranks/} [accessed 2021-10-01]}
+}
+
+\newglossaryentry{scientometrics}
+{
+    name={Scientometrics},
+    description={An international journal with an 5-year \gls{if} of $3.702$ for quantitative aspects of the science of science, communication in science and science policy. According to \url{https://academic-accelerator.com/5-Year-Impact-Factor/Scientometrics} [accessed 2021-10-01] it is placed 18 of 227 journals in the field of library and information sciences}
+}
+
+\newglossaryentry{if}
+{
+    name={IF},
+    user1={Impact Factor},
+    description={The impact factor of a journal is the number of citations during the past (usually 2 or 5) years divided by the number of published publications in the same time period}
+}
+
+% In case you want to add all entries you defined regardless if they appear in your text,
+% uncomment the following line:
+%\glsaddall
